@@ -16,10 +16,13 @@ struct Arrow: Shape {
 
         path.move(to: CGPoint(x: rect.midX, y: rect.minY))
         path.addLine(to: CGPoint(x: rect.minX, y: arrowTipSize * rect.maxY))
-        path.addLine(to: CGPoint(x: rect.minX, y: rect.maxY))
-        path.addLine(to: CGPoint(x: rect.maxX, y: rect.maxY))
+        path.addLine(to: CGPoint(x: rect.midX * (1 - arrowThickness), y: arrowTipSize * rect.maxY))
+        path.addLine(to: CGPoint(x: rect.midX * (1 - arrowThickness), y: rect.maxY))
+        path.addLine(to: CGPoint(x: rect.midX * (1 + arrowThickness), y: rect.maxY))
+        path.addLine(to: CGPoint(x: rect.midX * (1 + arrowThickness), y: arrowTipSize * rect.maxY))
         path.addLine(to: CGPoint(x: rect.maxX, y: arrowTipSize * rect.maxY))
         path.addLine(to: CGPoint(x: rect.midX, y: rect.minY))
+
 
 
 
@@ -29,12 +32,27 @@ struct Arrow: Shape {
 }
 
 struct ContentView: View {
-    @State private var arrowThickness = 1.0
-
+    @State private var arrowTipSize = 0.2
+    @State private var arrowThickness = 0.3
+    @State private var arrowWidth = 50.0
+    
     var body: some View {
-        Arrow()
-            .fill(.red)
-            .frame(width: 50, height: 300)
+        VStack {
+            Arrow(arrowTipSize: arrowTipSize, arrowThickness: arrowThickness)
+                .fill(.red)
+                .frame(width: arrowWidth, height: 300)
+            Text("Arrow Tip Size")
+            Slider(value: $arrowTipSize, in: 0...1)
+            
+            Text("Arrow Thickness")
+            Slider(value: $arrowThickness, in: 0...1)
+            
+            Text("Arrow Width")
+            Slider(value: $arrowWidth, in: 1...300)
+
+
+        }
+        
     }
 }
 
